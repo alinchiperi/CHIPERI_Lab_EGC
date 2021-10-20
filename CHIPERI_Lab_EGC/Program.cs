@@ -10,7 +10,7 @@ using OpenTK.Input;
 using OpenTK.Platform;
 
 /*
- * Student: CHHIPERI Alin-Ioan
+ * Student: CHIPERI Alin-Ioan
  * Calculatoare
  * grupa: 3131a
 */
@@ -25,6 +25,7 @@ namespace CHIPERI_Lab_EGC
         float angle;
         bool showCube = true;
         KeyboardState lastKeyPress;
+     
 
         // Constructor.
         public SimpleWindow3D() : base(800, 600)
@@ -68,23 +69,37 @@ namespace CHIPERI_Lab_EGC
                 Exit();
                 return;
             }
-            else if (keyboard[OpenTK.Input.Key.ControlLeft] && keyboard[OpenTK.Input.Key.C] )
+            else if (keyboard[OpenTK.Input.Key.ControlLeft] && keyboard[OpenTK.Input.Key.C] && keyboard.Equals(lastKeyPress))
             {
 
                 if (showCube == true)
                 {
                     showCube = false;
-                    
+
                 }
                 else
                 {
                     showCube = true;
                 }
-                lastKeyPress = keyboard;
-            }
-            
 
-           }
+            }
+            lastKeyPress = keyboard;
+
+            if (mouse[OpenTK.Input.MouseButton.Left])
+            {
+              
+                if (showCube == true)
+                {
+                    showCube = false;
+                }
+                else
+                {
+                    showCube = true;
+                }
+            }
+        }
+
+
 
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -105,6 +120,7 @@ namespace CHIPERI_Lab_EGC
             {
                 DrawCube();
             }
+
             
 
             SwapBuffers();
@@ -178,28 +194,6 @@ namespace CHIPERI_Lab_EGC
 
             GL.End();
         }
-        /*private void DrawPiramide()
-        {
-            GL.Begin(PrimitiveType.Triangles);
-
-            GL.Color3(1.0f, 0.0f, 0.0f); GL.Vertex3(0.0f, 1.0f, 0.0f);
-            GL.Color3(0.0f, 1.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
-            GL.Color3(0.0f, 0.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
-
-            GL.Color3(1.0f, 0.0f, 0.0f); GL.Vertex3(0.0f, 1.0f, 0.0f);
-            GL.Color3(0.0f, 1.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
-            GL.Color3(0.0f, 0.0f, 1.0f); GL.Vertex3(0.0f, -1.0f, -1.0f);
-
-            GL.Color3(1.0f, 0.0f, 0.0f); GL.Vertex3(0.0f, 1.0f, 0.0f);
-            GL.Color3(0.0f, 1.0f, 0.0f); GL.Vertex3(0.0f, -1.0f, -1.0f);
-            GL.Color3(0.0f, 0.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
-
-            GL.Color3(1.0f, 0.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
-            GL.Color3(0.0f, 1.0f, 0.0f); GL.Vertex3(0.0f, -1.0f, -1.0f);
-            GL.Color3(0.0f, 0.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
-
-            GL.End();
-        }*/
 
         [STAThread]
         static void Main(string[] args)
@@ -209,7 +203,7 @@ namespace CHIPERI_Lab_EGC
             using (SimpleWindow3D example = new SimpleWindow3D())
             {
 
-                // Verificați semnătura funcției în documentația inline oferită de IntelliSense!
+                
                 example.Run(30.0, 0.0);
             }
         }
