@@ -22,7 +22,8 @@ namespace CHIPERI_Lab_EGC
     {
 
         const float rotation_speed = 180.0f;
-        float angle;
+        float anglex;
+        float angley;
         bool showCube = true;
         KeyboardState lastKeyPress;
      
@@ -104,6 +105,8 @@ namespace CHIPERI_Lab_EGC
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            KeyboardState keyboard = OpenTK.Input.Keyboard.GetState();
+            MouseState mouse = OpenTK.Input.Mouse.GetCursorState();
             base.OnRenderFrame(e);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -112,8 +115,28 @@ namespace CHIPERI_Lab_EGC
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref lookat);
 
-            //angle += rotation_speed * (float)e.Time;
-            //GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
+            /*angle += rotation_speed * (float)e.Time;*/
+
+            //---------------------------------------------------------------
+            //Laborator 2 punctul 2
+            // controlul folosind 2 taste
+            if (keyboard[OpenTK.Input.Key.A])
+            {
+                anglex++;
+                GL.Rotate(anglex, 0.0f, 1.0f, 0.0f);
+            }
+            if (keyboard[OpenTK.Input.Key.D])
+            {
+                anglex--;
+                GL.Rotate(anglex, 0.0f, 1.0f, 0.0f);
+            }
+
+            /*
+             * Laborator 2
+             * Punctul 2-prin mișcarea mouse-ului.
+             */
+            GL.Rotate(mouse.X, 0.0f, 1.0f, 0.0f);
+
 
             // Exportăm controlul randării obiectelor către o metodă externă (modularizare).
             if (showCube == true)
