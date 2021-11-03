@@ -31,6 +31,7 @@ namespace CHIPERI_Lab_EGC
         Color color=Color.Red;
         bool showCube = true;
         KeyboardState lastKeyPress;
+
         
             
 
@@ -126,6 +127,7 @@ namespace CHIPERI_Lab_EGC
             {
                 lookatX--;
             }
+            
 
         }
         
@@ -310,6 +312,7 @@ namespace CHIPERI_Lab_EGC
             GL.Vertex3(1.0f, 1.0f, -1.0f);
             GL.Vertex3(1.0f, 1.0f, 1.0f);
             GL.Vertex3(1.0f, -1.0f, 1.0f);
+
 
             GL.End();
         }
