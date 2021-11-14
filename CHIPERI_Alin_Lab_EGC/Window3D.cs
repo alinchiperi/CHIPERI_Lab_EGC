@@ -14,51 +14,59 @@ namespace CHIPERI_Alin_Lab_EGC
     {
 
         Axes xyz;
-        
+        Camera3DIsometric cam;
         Triangle trg;
         Triangle trgRand;
+        private KeyboardState previousKeyboard;
         Cube cube;
         Cube cube2;
 
         bool drawRand = false;
-        bool changecolor = false;
+        
         KeyboardState lastKeyPress;
+        MouseState lastClick;
         private const int XYZ_SIZE = 75;
-
+        private readonly Color DEFAULT_BKG_COLOR = Color.FromArgb(49, 50, 51);
         public Window3D() : base(800, 600, new GraphicsMode(32, 24, 0, 8))
         {
+            VSync = VSyncMode.On;
+            cam = new Camera3DIsometric();
+            xyz = new Axes();
+            trg = new Triangle();
+            trgRand = new Triangle();
+            cube = new Cube();
+            cube2 = new Cube(@"D:\Facultate\Anul III\EGC\CHIPERI_Lab_EGC\Cube.txt");
+
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            GL.ClearColor(Color.MidnightBlue);
             GL.Enable(EnableCap.DepthTest);
-            GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
+            GL.DepthFunc(DepthFunction.Less);
 
-            xyz = new Axes();
-            trg = new Triangle();
-            trgRand = new Triangle();
-            cube = new Cube();
-            cube2 = new Cube(@"D:\Facultate\Anul III\EGC\CHIPERI_Lab_EGC\Cube.txt");
+            GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
         }
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
 
-            GL.Viewport(0, 0, Width, Height);
+            // set background
+            GL.ClearColor(DEFAULT_BKG_COLOR);
 
-            double aspect_ratio = Width / (double)Height;
+            // set viewport
+            GL.Viewport(0, 0, this.Width, this.Height);
 
-            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)aspect_ratio, 1, 64);
+            // set perspective
+            Matrix4 perspectiva = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)this.Width / (float)this.Height, 1, 1024);
             GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadMatrix(ref perspective);
+            GL.LoadMatrix(ref perspectiva);
 
-            Matrix4 lookat = Matrix4.LookAt(30, 30, 30, 0, 0, 0, 0, 1, 0);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref lookat);
+            // set the eye
+            cam.SetCamera();
+
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -68,13 +76,22 @@ namespace CHIPERI_Alin_Lab_EGC
             KeyboardState keyboard = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (mouse[MouseButton.Left])
+
+            if (mouse[MouseButton.Left]&& mouse.Equals(lastClick))
             {
-                Console.WriteLine("Click non-accelerat (" + mouse.X + "," + mouse.Y + "); accelerat (" + mouse.X + "," + mouse.Y + ")");
+                /*Console.WriteLine("Click non-accelerat (" + mouse.X + "," + mouse.Y + "); accelerat (" + mouse.X + "," + mouse.Y + ")");
                 IntPtr pix = new IntPtr();
                 GL.ReadPixels(mouse.X, mouse.Y, 1, 1, PixelFormat.Rgb, PixelType.Int, pix);
                 Console.WriteLine("Pixel colour (" + IntPtr.Size + " - 32 or 64 bits process);");
-                Console.WriteLine("");
+                Console.WriteLine("");*/
+
+                //trg.Translate(mouse.X);
+                //Console.WriteLine(mouse.X+" "+mouse.Y);
+                
+                trg.Fall();
+                
+
+
             }
 
 
@@ -131,13 +148,61 @@ namespace CHIPERI_Alin_Lab_EGC
                 cube2.ChangeColorFace4();
 
             }
+            if (keyboard[Key.U] && !keyboard.Equals(lastKeyPress))
+            {
+                cube2.Scale(3);
+                
+
+            }
             if (keyboard[Key.T] && !keyboard.Equals(lastKeyPress))
             {
                 drawRand = true;
             }
 
+            if (keyboard[Key.J] && !keyboard.Equals(lastKeyPress))
+            {
+               
+            }
+
+
+                #region CameraMove 
+                if (keyboard[Key.W])
+            {
+                cam.MoveForward();
+            }
+            if (keyboard[Key.S])
+            {
+                cam.MoveBackward();
+            }
+            if (keyboard[Key.A])
+            {
+                cam.MoveLeft();
+            }
+            if (keyboard[Key.D])
+            {
+                cam.MoveRight();
+            }
+            if (keyboard[Key.Q])
+            {
+                cam.MoveUp();
+            }
+            if (keyboard[Key.E])
+            {
+                cam.MoveDown();
+
+            }
+            if(keyboard[Key.G] && !keyboard.Equals(lastKeyPress))
+            {
+                cam.FarCam();
+            }
+            if (keyboard[Key.H] && !keyboard.Equals(lastKeyPress))
+            {
+                cam.NearCam();
+            }
+            #endregion
 
             lastKeyPress = keyboard;
+            lastClick = mouse;
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -149,15 +214,12 @@ namespace CHIPERI_Alin_Lab_EGC
 
             xyz.DrawMe();
            
-            if(drawRand)
+          /*  if(drawRand)
             {
                 trgRand.DrawRand();
-            }
+            }*/
 
-            //trg.DrawMe();
-
-           //cube.Draw2();
-
+            trg.DrawMe();
             cube2.Draw();
            
 

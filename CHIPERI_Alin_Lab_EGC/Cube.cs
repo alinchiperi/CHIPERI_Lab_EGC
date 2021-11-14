@@ -185,7 +185,6 @@ namespace CHIPERI_Alin_Lab_EGC
                 GL.End();
             }
 
-
         }
 
         /// <summary>
@@ -224,5 +223,11 @@ namespace CHIPERI_Alin_Lab_EGC
            
         }
         #endregion
+        public void Scale(int x)
+        {
+            for (int i = 0; i < coordonate.Count; i++)
+                coordonate[i] *= x;
+        }
+
     }
 }

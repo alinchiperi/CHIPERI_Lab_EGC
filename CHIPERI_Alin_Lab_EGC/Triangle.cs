@@ -11,8 +11,14 @@ namespace CHIPERI_Alin_Lab_EGC
         private readonly int OFFSET = 1;
         public bool IsDrawable { get; set; }
         
-        
-
+        public bool canFall()
+        {
+            if (A.coordY != 0)
+                return true;
+            else
+                return false;
+        }
+      
         public void Hide()
         {
             IsDrawable = false;
@@ -40,11 +46,11 @@ namespace CHIPERI_Alin_Lab_EGC
             IsDrawable = true;
 
             // coordonate hardcoded - se poate înlocui cu încărcare din fișier text specificat;
-            A = new VertexPoint(5, 2, 0, Color.DeepPink);
-            B = new VertexPoint(15, 20, 0, Color.DeepPink);
-            C = new VertexPoint(10, 20, 0, Color.DeepPink);
+            A = new VertexPoint(5, 12, 0, Color.DeepPink);
+            B = new VertexPoint(15, 30, 0, Color.DeepPink);
+            C = new VertexPoint(10, 30, 0, Color.DeepPink);
         }
-
+       
         public void ManualMoveMe(bool _relativeForward, bool _relativeBackward, bool _relativeLeft, bool _relativeRight, bool _relativeUp, bool _relativeDown)
         {
             if (IsDrawable == false)
@@ -135,6 +141,27 @@ namespace CHIPERI_Alin_Lab_EGC
 
         }
         
+        public void Translate(int x)
+        {
+            A.coordX += x;
+            B.coordX += x;
+            C.coordX += x;
+            A.coordY += x;
+            B.coordY += x;
+            C.coordY += x;
+            A.coordZ += x;
+            B.coordZ += x;
+            C.coordZ += x;
 
+        }
+
+        public void Fall()
+        {
+            while(canFall())
+            {
+                ManualMoveMe(false, false, false, false, false, true);
+                
+            }
+        }
     }
 }
