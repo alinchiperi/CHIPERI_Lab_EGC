@@ -10,7 +10,7 @@ namespace CHIPERI_Alin_Lab_EGC
         public VertexPoint A, B, C;
         private readonly int OFFSET = 1;
         public bool IsDrawable { get; set; }
-        
+
         public bool canFall()
         {
             if (A.coordY != 0)
@@ -18,7 +18,7 @@ namespace CHIPERI_Alin_Lab_EGC
             else
                 return false;
         }
-      
+
         public void Hide()
         {
             IsDrawable = false;
@@ -155,13 +155,15 @@ namespace CHIPERI_Alin_Lab_EGC
 
         }
 
+
         public void Fall()
         {
-            while(canFall())
+            while (canFall())
             {
                 ManualMoveMe(false, false, false, false, false, true);
-                
+
             }
         }
+
     }
 }

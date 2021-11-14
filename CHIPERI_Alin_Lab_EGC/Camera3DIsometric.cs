@@ -90,7 +90,9 @@ namespace CHIPERI_Alin_Lab_EGC
             target = new Vector3(0, 25, 0);
             SetCamera();
         }
+
         // functie de apropiere a camerei
+
         public void NearCam()
         {
             eye = new Vector3(50, 10, 60);
