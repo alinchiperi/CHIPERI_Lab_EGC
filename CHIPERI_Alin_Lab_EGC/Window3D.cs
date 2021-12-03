@@ -20,6 +20,8 @@ namespace CHIPERI_Alin_Lab_EGC
         private KeyboardState previousKeyboard;
         Cube cube;
         Cube cube2;
+        private ulong updatesCounter;
+
 
         bool drawRand = false;
         
@@ -36,6 +38,7 @@ namespace CHIPERI_Alin_Lab_EGC
             trgRand = new Triangle();
             cube = new Cube();
             cube2 = new Cube(@"D:\Facultate\Anul III\EGC\CHIPERI_Lab_EGC\Cube.txt");
+            updatesCounter = 0;
 
         }
 
@@ -72,6 +75,7 @@ namespace CHIPERI_Alin_Lab_EGC
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+            updatesCounter++;
 
             KeyboardState keyboard = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
@@ -90,13 +94,18 @@ namespace CHIPERI_Alin_Lab_EGC
                 
                 trg.Fall();
                 
-
-
+            }
+            if (keyboard[Key.Y] && !keyboard.Equals(lastKeyPress))
+            {
+                trg.Morph();
+                trg.DiscoMode();
+               
             }
 
 
-            // Se utilizeaza mecanismul de control input oferit de OpenTK (include perifcerice multiple, inclusiv
-            // pentru gaminig - gamepads, joysticks, etc.).
+
+                // Se utilizeaza mecanismul de control input oferit de OpenTK (include perifcerice multiple, inclusiv
+                // pentru gaminig - gamepads, joysticks, etc.).
             if (keyboard[Key.Escape])
             {
                 Exit();
@@ -112,6 +121,7 @@ namespace CHIPERI_Alin_Lab_EGC
 
             if (keyboard[Key.L] && !keyboard.Equals(lastKeyPress))
             {
+                
                 trg.ToggleVisibility();
             }
 
@@ -219,7 +229,7 @@ namespace CHIPERI_Alin_Lab_EGC
                 trgRand.DrawRand();
             }*/
 
-            trg.DrawMe();
+            trg.Draw();
             cube2.Draw();
            
 

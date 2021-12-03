@@ -7,7 +7,15 @@ namespace CHIPERI_Alin_Lab_EGC
 {
     class Triangle
     {
-        public VertexPoint A, B, C;
+        private const int MIN_VAL= -25;
+        private const int MAX_VAL= 25;
+
+        private VertexPoint A, B, C;
+        private Color color;
+        private Randomizer rando= new Randomizer();
+        private Random r = new Random();
+        
+        private float linewidth;
         private readonly int OFFSET = 1;
         public bool IsDrawable { get; set; }
 
@@ -44,11 +52,12 @@ namespace CHIPERI_Alin_Lab_EGC
         public Triangle()
         {
             IsDrawable = true;
+            color = rando.RandomColor();
 
             // coordonate hardcoded - se poate înlocui cu încărcare din fișier text specificat;
-            A = new VertexPoint(5, 12, 0, Color.DeepPink);
-            B = new VertexPoint(15, 30, 0, Color.DeepPink);
-            C = new VertexPoint(10, 30, 0, Color.DeepPink);
+            A = new VertexPoint(5, 12, 0, color);
+            B = new VertexPoint(15, 30, 0,color);
+            C = new VertexPoint(10, 30, 0,color);
         }
        
         public void ManualMoveMe(bool _relativeForward, bool _relativeBackward, bool _relativeLeft, bool _relativeRight, bool _relativeUp, bool _relativeDown)
@@ -102,7 +111,7 @@ namespace CHIPERI_Alin_Lab_EGC
 
         }
 
-        public void DrawMe()
+        public void Draw()
         {
             if (IsDrawable == false)
             {
@@ -111,11 +120,9 @@ namespace CHIPERI_Alin_Lab_EGC
 
             GL.Begin(PrimitiveType.Triangles);
 
-            GL.Color3(A.pointColor);
+            GL.Color3(color);
             GL.Vertex3(A.coordX, A.coordY, A.coordZ);
-            GL.Color3(B.pointColor);
             GL.Vertex3(B.coordX, B.coordY, B.coordZ);
-            GL.Color3(C.pointColor);
             GL.Vertex3(C.coordX, C.coordY, C.coordZ);
 
             GL.End();
@@ -165,5 +172,30 @@ namespace CHIPERI_Alin_Lab_EGC
             }
         }
 
+        public void DiscoMode()
+        {
+            color = rando.RandomColor();
+        }
+        /// <summary>
+        /// 2 PUNCTE RAMAN FIZE SI AL 3 LEA SE MORFEAZA
+        /// </summary>
+        public void Morph()
+        {
+            int select = rando.GeneratePozitiveInt(3);
+            VertexPoint tmp = rando.GenerateVertexPoint();
+            if(select==0)
+            {
+                A = tmp;
+            }else if(select ==1)
+            {
+                B = tmp;
+            }else
+            {
+                C = tmp;
+            }
+
+        }
+
+     
     }
 }

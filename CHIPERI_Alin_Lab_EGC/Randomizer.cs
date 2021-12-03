@@ -64,5 +64,24 @@ namespace CHIPERI_Alin_Lab_EGC
 
             return i;
         }
+        /// <summary>
+        /// Functie care genereaza un vertexpoint avand coordonatele intre LOW_INT_VAL si HIGH_INT_VAL
+        /// </summary>
+        /// <returns></returns>
+        public VertexPoint GenerateVertexPoint()
+        {
+            int a = r.Next(LOW_INT_VAL,HIGH_INT_VAL);
+            int b = r.Next(LOW_INT_VAL,HIGH_INT_VAL);
+            int c = r.Next(LOW_INT_VAL,HIGH_INT_VAL);
+
+            VertexPoint vertx = new VertexPoint(a, b, c);
+            return vertx;
+        }
+
+        public int GeneratePozitiveInt(int limit)
+        {
+            int a = r.Next(0, limit);
+            return a;
+        }
     }
 }
