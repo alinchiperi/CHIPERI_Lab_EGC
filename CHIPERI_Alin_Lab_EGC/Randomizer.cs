@@ -83,5 +83,17 @@ namespace CHIPERI_Alin_Lab_EGC
             int a = r.Next(0, limit);
             return a;
         }
+        /// <summary>
+        /// Metoda care returneaza un int random . Valoarea returnata este intre valorile date
+        /// </summary>
+        /// <param name="minVal">Valoarea minima</param>
+        /// <param name="maxVal">valoarea maxima</param>
+        /// <returns>valoarea random</returns>
+        public int RandomInt(int minVal, int maxVal)
+        {
+            int i = r.Next(minVal,maxVal);
+
+            return i;
+        }
     }
 }

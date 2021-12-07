@@ -4,6 +4,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace CHIPERI_Alin_Lab_EGC
 {
@@ -20,7 +21,8 @@ namespace CHIPERI_Alin_Lab_EGC
         private KeyboardState previousKeyboard;
         Cube cube;
         Cube cube2;
-        private ulong updatesCounter;
+
+        private List<Objectoid> rainOfObjects;
 
 
         bool drawRand = false;
@@ -38,7 +40,7 @@ namespace CHIPERI_Alin_Lab_EGC
             trgRand = new Triangle();
             cube = new Cube();
             cube2 = new Cube(@"D:\Facultate\Anul III\EGC\CHIPERI_Lab_EGC\Cube.txt");
-            updatesCounter = 0;
+            rainOfObjects = new List<Objectoid>();
 
         }
 
@@ -75,7 +77,7 @@ namespace CHIPERI_Alin_Lab_EGC
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            updatesCounter++;
+           
 
             KeyboardState keyboard = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
@@ -174,7 +176,22 @@ namespace CHIPERI_Alin_Lab_EGC
                
             }
 
+            // ploaie de obiecte
+            if(mouse[MouseButton.Left] && !lastClick[MouseButton.Left])
+            {
+                rainOfObjects.Add(new Objectoid());
+            }
+            // curata obiectele cazatoare
 
+            if(mouse[MouseButton.Right]&& !lastClick[MouseButton.Right])
+            {
+                rainOfObjects.Clear();
+            }
+            // update cadere
+            foreach(Objectoid obj in rainOfObjects)
+            {
+                obj.UpdatePosition();
+            }
                 #region CameraMove 
                 if (keyboard[Key.W])
             {
@@ -221,17 +238,18 @@ namespace CHIPERI_Alin_Lab_EGC
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+        
 
             xyz.DrawMe();
-           
-          /*  if(drawRand)
-            {
-                trgRand.DrawRand();
-            }*/
+          
 
             trg.Draw();
-            cube2.Draw();
+            //cube2.Draw();
            
+            foreach(Objectoid obj in rainOfObjects)
+            {
+                obj.Draw();
+            }
 
             SwapBuffers();
         }
