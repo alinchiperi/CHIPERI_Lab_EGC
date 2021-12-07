@@ -111,7 +111,7 @@ namespace CHIPERI_Alin_Lab_EGC
         }
         public void Hide()
         {
-            visibility = true;
+            visibility = false;
         }
         private List<Vector3> LoadFromObjFile(string NumeFisier)
         {

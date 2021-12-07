@@ -17,15 +17,10 @@ namespace CHIPERI_Alin_Lab_EGC
         Axes xyz;
         Camera3DIsometric cam;
         Triangle trg;
-        Triangle trgRand;
-        private KeyboardState previousKeyboard;
         Cube cube;
         Cube cube2;
 
         private List<Objectoid> rainOfObjects;
-
-
-        bool drawRand = false;
         
         KeyboardState lastKeyPress;
         MouseState lastClick;
@@ -37,10 +32,11 @@ namespace CHIPERI_Alin_Lab_EGC
             cam = new Camera3DIsometric();
             xyz = new Axes();
             trg = new Triangle();
-            trgRand = new Triangle();
             cube = new Cube();
             cube2 = new Cube(@"D:\Facultate\Anul III\EGC\CHIPERI_Lab_EGC\Cube.txt");
             rainOfObjects = new List<Objectoid>();
+
+            DisplayMenu();
 
         }
 
@@ -82,30 +78,6 @@ namespace CHIPERI_Alin_Lab_EGC
             KeyboardState keyboard = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-
-            if (mouse[MouseButton.Left]&& mouse.Equals(lastClick))
-            {
-                /*Console.WriteLine("Click non-accelerat (" + mouse.X + "," + mouse.Y + "); accelerat (" + mouse.X + "," + mouse.Y + ")");
-                IntPtr pix = new IntPtr();
-                GL.ReadPixels(mouse.X, mouse.Y, 1, 1, PixelFormat.Rgb, PixelType.Int, pix);
-                Console.WriteLine("Pixel colour (" + IntPtr.Size + " - 32 or 64 bits process);");
-                Console.WriteLine("");*/
-
-                //trg.Translate(mouse.X);
-                //Console.WriteLine(mouse.X+" "+mouse.Y);
-                
-                trg.Fall();
-                
-            }
-            if (keyboard[Key.Y] && !keyboard.Equals(lastKeyPress))
-            {
-                trg.Morph();
-                trg.DiscoMode();
-               
-            }
-
-
-
                 // Se utilizeaza mecanismul de control input oferit de OpenTK (include perifcerice multiple, inclusiv
                 // pentru gaminig - gamepads, joysticks, etc.).
             if (keyboard[Key.Escape])
@@ -121,12 +93,7 @@ namespace CHIPERI_Alin_Lab_EGC
                 xyz.ToggleVisibility();
             }
 
-            if (keyboard[Key.L] && !keyboard.Equals(lastKeyPress))
-            {
-                
-                trg.ToggleVisibility();
-            }
-
+            #region _TriangleMOVE_ 
             if (keyboard[Key.Z] && !keyboard.Equals(lastKeyPress))
             {
                 trg.ManualMoveMe(true, false, false, false, false, false);
@@ -151,6 +118,14 @@ namespace CHIPERI_Alin_Lab_EGC
             {
                 trg.ManualMoveMe(false, false, false, false, false, true);
             }
+            #endregion
+
+            if (keyboard[Key.Y] && !keyboard.Equals(lastKeyPress))
+            {
+                trg.Morph(); //triangle morph
+                trg.DiscoMode(); // triangle discomode
+
+            }
             //la apasarea tastei r se vor schimba fetele cubului 
             if (keyboard[Key.R] && !keyboard.Equals(lastKeyPress))
             {
@@ -168,12 +143,13 @@ namespace CHIPERI_Alin_Lab_EGC
             }
             if (keyboard[Key.T] && !keyboard.Equals(lastKeyPress))
             {
-                drawRand = true;
+                cube2.ToggleVisibility();
+                trg.ToggleVisibility();
             }
 
-            if (keyboard[Key.J] && !keyboard.Equals(lastKeyPress))
+            if (keyboard[Key.H] && !keyboard.Equals(lastKeyPress))
             {
-               
+                DisplayMenu();
             }
 
             // ploaie de obiecte
@@ -218,11 +194,11 @@ namespace CHIPERI_Alin_Lab_EGC
                 cam.MoveDown();
 
             }
-            if(keyboard[Key.G] && !keyboard.Equals(lastKeyPress))
+            if(keyboard[Key.J] && !keyboard.Equals(lastKeyPress))
             {
                 cam.FarCam();
             }
-            if (keyboard[Key.H] && !keyboard.Equals(lastKeyPress))
+            if (keyboard[Key.K] && !keyboard.Equals(lastKeyPress))
             {
                 cam.NearCam();
             }
@@ -236,15 +212,12 @@ namespace CHIPERI_Alin_Lab_EGC
         {
             base.OnRenderFrame(e);
 
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);        
 
-        
-
-            xyz.DrawMe();
-          
+            xyz.DrawMe();          
 
             trg.Draw();
-            //cube2.Draw();
+            cube2.Draw();
            
             foreach(Objectoid obj in rainOfObjects)
             {
@@ -252,6 +225,25 @@ namespace CHIPERI_Alin_Lab_EGC
             }
 
             SwapBuffers();
+        }
+
+        public void DisplayMenu()
+        {
+            Console.WriteLine("-----------------------MENU---------------------");
+            Console.WriteLine("Left Click - Cadere obiect de la o inaltime random ");
+            Console.WriteLine("Right Click - Curata lista de Obiecte ");
+            Console.WriteLine("ESC - terminare program");
+            Console.WriteLine("P - show axes");
+            Console.WriteLine("H - show help");
+            Console.WriteLine("W A S D E Q - camera move");
+            Console.WriteLine("J - Far Cam");
+            Console.WriteLine("K - Near Cam");
+            Console.WriteLine("Z X C V B N - Triangle Move");
+            Console.WriteLine("Y -  Triangle Morph and Disco Mode");
+            Console.WriteLine("U - cube Scale");
+            Console.WriteLine("R - change cube color");
+
+
         }
     }
 }
